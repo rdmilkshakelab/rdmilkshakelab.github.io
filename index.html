@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TV Incident Tracker</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body { 
+            font-family: 'Segoe UI', Roboto, Arial, sans-serif; 
+            background: #0c0d0f; 
+            color: #ffffff; 
+            height: 100vh; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            align-items: center; 
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .container {
+            width: 90vw;
+            max-width: 1200px;
+        }
+
+        h1 { 
+            font-size: 4.5rem; 
+            font-weight: 700;
+            color: #a0a5b5;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 10px;
+        }
+
+        .counter { 
+            font-size: 22rem; 
+            font-weight: 900; 
+            color: #ff3e3e; 
+            line-height: 1;
+            margin: 10px 0;
+            text-shadow: 0 0 50px rgba(255, 62, 62, 0.4);
+        }
+
+        .date-label { 
+            font-size: 2.2rem; 
+            color: #70757a; 
+            margin-bottom: 50px;
+        }
+
+        .date-label span {
+            color: #ffffff;
+            font-weight: bold;
+        }
+
+        .btn-reset { 
+            background: #1c1d22; 
+            color: #ff3e3e; 
+            border: 4px solid #ff3e3e; 
+            padding: 24px 60px; 
+            font-size: 2.5rem; 
+            font-weight: bold;
+            border-radius: 50px; 
+            cursor: pointer;
+            outline: none;
+            transition: all 0.2s ease-in-out;
+            text-transform: uppercase;
+        }
+
+        .btn-reset:focus, .btn-reset:hover { 
+            background: #ff3e3e; 
+            color: #ffffff;
+            transform: scale(1.08);
+            box-shadow: 0 0 50px rgba(255, 62, 62, 0.6);
+        }
+
+        /* TV-Friendly Modal Dialog (Replaces native broken popups) */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .modal-content {
+            background: #16171a;
+            border: 3px solid #30343c;
+            padding: 50px;
+            border-radius: 30px;
+            max-width: 600px;
+            width: 80%;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+
+        .modal h2 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: #ffffff;
+        }
+
+        .modal p {
+            font-size: 1.8rem;
+            color: #a0a5b5;
+            margin-bottom: 40px;
+        }
+
+        .modal-buttons {
+            display: flex;
+            justify-content: space-around;
+            gap: 20px;
+        }
+
+        .modal-btn {
+            flex: 1;
+            padding: 20px;
+            font-size: 2rem;
+            font-weight: bold;
+            border-radius: 15px;
+            border: none;
+            cursor: pointer;
+            outline: none;
+            text-transform: uppercase;
+        }
+
+        .btn-confirm { background: #ff3e3e; color: white; }
+        .btn-cancel { background: #30343c; color: white; }
+
+        .modal-btn:focus, .modal-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(255,255,255,0.2);
+        }
+        .btn-confirm:focus { box-shadow: 0 0 30px rgba(255, 62, 62, 0.6); }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Days Without Incident</h1>
+        <div class="counter" id="daysCount">0</div>
+        <div class="date-label">Since last record: <span id="lastDate">--/--/----</span></div>
+        <button class="btn-reset" id="resetBtn" autofocus>Reset Counter</button>
+    </div>
+
+    <!-- Custom Confirmation Modal -->
+    <div class="modal" id="confirmModal">
+        <div class="modal-content">
+            <h2>Reset Counter?</h2>
+            <p>This will set the record back to 0 days.</p>
+            <div class="modal-buttons">
+                <button class="modal-btn btn-confirm" id="modalYes">Yes, Reset</button>
+                <button class="modal-btn btn-cancel" id="modalNo">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const resetBtn = document.getElementById('resetBtn');
+        const modal = document.getElementById('confirmModal');
+        const modalYes = document.getElementById('modalYes');
+        const modalNo = document.getElementById('modalNo');
+
+        function getSavedDate() {
+            let saved = localStorage.getItem('tvLastIncidentDate');
+            if (!saved) {
+                saved = new Date().toLocaleDateString();
+                localStorage.setItem('tvLastIncidentDate', saved);
+            }
+            return saved;
+        }
+
+        function calculateDays() {
+            const lastDateStr = getSavedDate();
+            document.getElementById('lastDate').innerText = lastDateStr;
+            
+            const lastDate = new Date(lastDateStr);
+            const today = new Date();
+            
+            lastDate.setHours(0,0,0,0);
+            today.setHours(0,0,0,0);
+            
+            const diffTime = today - lastDate;
+            const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+            
+            document.getElementById('daysCount').innerText = diffDays >= 0 ? diffDays : 0;
+        }
+
+        // Open custom modal
+        resetBtn.addEventListener('click', () => {
+            modal.style.display = 'flex';
+            modalYes.focus(); // Shift TV focus to modal
+        });
+
+        // Confirm Reset
+        modalYes.addEventListener('click', () => {
+            const todayStr = new Date().toLocaleDateString();
+            localStorage.setItem('tvLastIncidentDate', todayStr);
+            calculateDays();
+            closeModal();
+        });
+
+        // Cancel Reset
+        modalNo.addEventListener('click', closeModal);
+
+        function closeModal() {
+            modal.style.display = 'none';
+            resetBtn.focus(); // Return focus to main button
+        }
+
+        // Keep TV D-pad focus locked inside active screen elements
+        window.addEventListener('keydown', function(e) {
+            if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
+                if (modal.style.display === 'flex') {
+                    if (document.activeElement !== modalYes && document.activeElement !== modalNo) {
+                        modalYes.focus();
+                    }
+                } else {
+                    resetBtn.focus();
+                }
+            }
+        });
+
+        // Init
+        calculateDays();
+        resetBtn.focus();
+    </script>
+</body>
+</html>
