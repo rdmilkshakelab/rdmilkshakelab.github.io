@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+svg { display: block; margin: 0 auto; }
+</style>
+</head>
+<body>
+<script>
+const width = 800;
+const height = 400;
+const cellSize = 20;
+const cols = width / cellSize;
+const rows = height / cellSize;
+
+let levelParam = new URLSearchParams(window.location.search).get('level') || 1;
+let level = parseInt(levelParam);
+
+// Generate maze
+function generateMaze(level) {
+    const grid = [];
+    for (let i = 0; i < rows; i++) {
+        grid[i] = [];
+        for (let j = 0; j < cols; j++) {
+            grid[i][j] = (i === 0 || i === rows - 1 || j === 0 || j === cols - 1) ? 1 : 0;
+        }
+    }
+
+    const complexity = 0.3 + (level * 0.08);
+    for (let i = 1; i < rows - 1; i++) {
+        for (let j = 1; j < cols - 1; j++) {
+            if (Math.random() < complexity) grid[i][j] = 1;
+        }
+    }
+
+    grid[rows - 2][cols - 2] = 0;
+    grid[1][2] = 0;
+    grid[2][1] = 0;
+    return grid;
+}
+
+// BFS pathfinding
+function findPath(grid) {
+    const start = { x: 1, y: 1 };
+    const end = { x: cols - 2, y: rows - 2 };
+    const queue = [[start.x, start.y]];
+    const visited = new Set([`${start.x},${start.y}`]);
+    const parent = new Map();
+
+    while (queue.length > 0) {
+        const [x, y] = queue.shift();
+        if (x === end.x && y === end.y) {
+            const path = [[end.x, end.y]];
+            let current = `${end.x},${end.y}`;
+            while (parent.has(current)) {
+                const [px, py] = parent.get(current);
+                path.unshift([px, py]);
+                current = `${px},${py}`;
+            }
+            return path;
+        }
+
+        const neighbors = [[x+1, y], [x-1, y], [x, y+1], [x, y-1]];
+        for (const [nx, ny] of neighbors) {
+            const key = `${nx},${ny}`;
+            if (!visited.has(key) && nx >= 0 && nx < cols && ny >= 0 && ny < rows && grid[ny][nx] !== 1) {
+                visited.add(key);
+                parent.set(key, [x, y]);
+                queue.push([nx, ny]);
+            }
+        }
+    }
+    return [];
+}
+
+const grid = generateMaze(level);
+const path = findPath(grid);
+
+// Generate SVG
+let svg = `<svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}">
+<rect width="${width}" height="${height}" fill="black"/>
+`;
+
+// Draw walls
+for (let i = 0; i < rows; i++) {
+    for (let j = 0; j < cols; j++) {
+        if (grid[i][j] === 1) {
+            svg += `<rect x="${j * cellSize}" y="${i * cellSize}" width="${cellSize}" height="${cellSize}" fill="#333"/>`;
+        }
+    }
+}
+
+// Draw end point
+svg += `<circle cx="${(cols - 2) * cellSize + cellSize / 2}" cy="${(rows - 2) * cellSize + cellSize / 2}" r="8" fill="red"/>`;
+
+// Draw runner with animation
+svg += `<circle cx="${cellSize + cellSize / 2}" cy="${cellSize + cellSize / 2}" r="8" fill="lime">
+  <animateMotion dur="${path.length}s" fill="freeze">
+    <mpath href="#path"/>
+  </animateMotion>
+</circle>`;
+
+// Create path for animation
+svg += `<path id="path" d="M ${cellSize + cellSize / 2} ${cellSize + cellSize / 2}`;
+for (const [x, y] of path.slice(1)) {
+    svg += ` L ${x * cellSize + cellSize / 2} ${y * cellSize + cellSize / 2}`;
+}
+svg += `" stroke="none" fill="none"/>`;
+
+// Add level text
+svg += `<text x="20" y="30" font-family="Arial" font-size="20" fill="white" font-weight="bold">Level ${level}</text>`;
+
+svg += `</svg>`;
+
+document.body.innerHTML = svg;
+</script>
+</body>
+</html>
