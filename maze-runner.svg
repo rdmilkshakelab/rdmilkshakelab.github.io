@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 300" width="760" height="300" role="img" aria-labelledby="title desc">
+  <title id="title">Automatic maze runner</title>
+  <desc id="desc">An unbranded yellow runner automatically completes three maze levels and then starts again.</desc>
+  <rect width="760" height="300" fill="#000"/>
+  <text x="24" y="30" fill="#fff" font-family="Arial, sans-serif" font-size="18" font-weight="bold">Automatic Maze Runner</text>
+  <text x="24" y="51" fill="#aaa" font-family="Arial, sans-serif" font-size="12">Three levels · automatic · always reaches the finish</text>
+
+  <g transform="translate(20 68)">
+    <rect width="720" height="58" fill="#050505" stroke="#2878d0" stroke-width="2"/>
+    <path d="M18 18H120V40H220V18H320V40H420V18H520V40H702" fill="none" stroke="#2878d0" stroke-width="4"/>
+    <circle r="7" fill="#ffd21f">
+      <animateMotion dur="5s" repeatCount="indefinite" path="M18,18 H120 V40 H220 V18 H320 V40 H420 V18 H520 V40 H702"/>
+    </circle>
+    <text x="18" y="53" fill="#aaa" font-family="Arial, sans-serif" font-size="10">LEVEL 1</text>
+    <text x="702" y="53" text-anchor="end" fill="#42d17b" font-family="Arial, sans-serif" font-size="10">FINISH</text>
+  </g>
+
+  <g transform="translate(20 134)">
+    <rect width="720" height="58" fill="#050505" stroke="#2878d0" stroke-width="2"/>
+    <path d="M18 40H90V18H180V40H270V18H360V40H450V18H540V40H702" fill="none" stroke="#2878d0" stroke-width="4"/>
+    <circle r="7" fill="#ffd21f">
+      <animateMotion begin="5s" dur="5s" repeatCount="indefinite" path="M18,40 H90 V18 H180 V40 H270 V18 H360 V40 H450 V18 H540 V40 H702"/>
+    </circle>
+    <text x="18" y="53" fill="#aaa" font-family="Arial, sans-serif" font-size="10">LEVEL 2</text>
+    <text x="702" y="53" text-anchor="end" fill="#42d17b" font-family="Arial, sans-serif" font-size="10">FINISH</text>
+  </g>
+
+  <g transform="translate(20 200)">
+    <rect width="720" height="58" fill="#050505" stroke="#2878d0" stroke-width="2"/>
+    <path d="M18 18H70V40H140V18H210V40H280V18H350V40H420V18H490V40H560V18H702" fill="none" stroke="#2878d0" stroke-width="4"/>
+    <circle r="7" fill="#ffd21f">
+      <animateMotion begin="10s" dur="5s" repeatCount="indefinite" path="M18,18 H70 V40 H140 V18 H210 V40 H280 V18 H350 V40 H420 V18 H490 V40 H560 V18 H702"/>
+    </circle>
+    <text x="18" y="53" fill="#aaa" font-family="Arial, sans-serif" font-size="10">LEVEL 3</text>
+    <text x="702" y="53" text-anchor="end" fill="#42d17b" font-family="Arial, sans-serif" font-size="10">FINISH</text>
+  </g>
+</svg>
