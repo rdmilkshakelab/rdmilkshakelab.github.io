@@ -1,10 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 300" width="760" height="300" role="img" aria-labelledby="title desc">
-  <title id="title">Automatic maze runner</title>
-  <desc id="desc">An unbranded yellow runner automatically completes three maze levels and then starts again.</desc>
   <rect width="760" height="300" fill="#000"/>
-  <text x="24" y="30" fill="#fff" font-family="Arial, sans-serif" font-size="18" font-weight="bold">Automatic Maze Runner</text>
-  <text x="24" y="51" fill="#aaa" font-family="Arial, sans-serif" font-size="12">Three levels · automatic · always reaches the finish</text>
-  <g transform="translate(20 68)">
     <rect width="720" height="58" fill="#050505" stroke="#2878d0" stroke-width="2"/>
     <path d="M18 18H120V40H220V18H320V40H420V18H520V40H702" fill="none" stroke="#2878d0" stroke-width="4"/>
     <circle r="7" fill="#ffd21f"><animateMotion dur="5s" repeatCount="indefinite" path="M18,18 H120 V40 H220 V18 H320 V40 H420 V18 H520 V40 H702"/></circle>
