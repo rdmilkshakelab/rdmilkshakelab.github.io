@@ -13,7 +13,7 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-            background: #fff;
+            background: #f7f9fc;
             color: #333;
             line-height: 1.6;
         }
@@ -25,32 +25,53 @@
         }
 
         header {
+            position: relative;
             margin-bottom: 50px;
+            padding: 32px 0 36px;
+            border-bottom: 1px solid #e1e6ef;
+        }
+
+        header::after {
+            content: "";
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 64px;
+            height: 3px;
+            background: #2878d0;
+            border-radius: 3px;
         }
 
         h1 {
-            font-size: 32px;
-            font-weight: 600;
+            font-size: 34px;
+            font-weight: 650;
+            letter-spacing: -0.5px;
             margin-bottom: 8px;
         }
 
         .subtitle {
-            color: #666;
+            color: #64748b;
             font-size: 16px;
-            margin-bottom: 30px;
+            margin-bottom: 18px;
+        }
+
+        .intro {
+            color: #475569;
+            max-width: 560px;
         }
 
         .clock-box {
-            background: #f5f5f5;
-            border: 1px solid #ddd;
-            border-radius: 8px;
+            background: #fff;
+            border: 1px solid #e1e6ef;
+            border-radius: 10px;
             padding: 24px;
             margin-bottom: 40px;
             text-align: center;
+            box-shadow: 0 5px 18px rgba(30, 55, 90, 0.06);
         }
 
         .clock-label {
-            color: #666;
+            color: #64748b;
             font-size: 14px;
             margin-bottom: 8px;
         }
@@ -59,7 +80,7 @@
             font-family: "SF Mono", Monaco, "Cascadia Code", "Roboto Mono", Consolas, "Courier New", monospace;
             font-size: 28px;
             font-weight: 600;
-            color: #000;
+            color: #1d5fa7;
             letter-spacing: 1px;
         }
 
@@ -70,7 +91,17 @@
         }
 
         .project {
-            margin-bottom: 30px;
+            background: #fff;
+            border: 1px solid #e1e6ef;
+            border-radius: 10px;
+            padding: 24px;
+            transition: border-color .2s ease, transform .2s ease, box-shadow .2s ease;
+        }
+
+        .project:hover {
+            border-color: #9fc5ed;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 22px rgba(30, 55, 90, 0.08);
         }
 
         .project h3 {
@@ -89,6 +120,7 @@
             color: #0066cc;
             text-decoration: none;
             font-size: 14px;
+            margin-top: 8px;
         }
 
         .project-link:hover {
@@ -97,8 +129,8 @@
 
         .tag {
             display: inline-block;
-            background: #f0f0f0;
-            color: #333;
+            background: #eaf3fd;
+            color: #1d5fa7;
             padding: 4px 8px;
             border-radius: 4px;
             font-size: 12px;
@@ -128,9 +160,10 @@
         <header>
             <h1>Alfie Catlow</h1>
             <p class="subtitle">Developer based in London</p>
+            <p class="intro">I enjoy building practical projects and experimenting with new ideas.</p>
         </header>
 
-        <div class="clock-box">
+        <div class="clock-box" aria-live="polite">
             <div class="clock-label">The time where I live is:</div>
             <div id="time">--:--:--</div>
         </div>
